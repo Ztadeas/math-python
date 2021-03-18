@@ -136,7 +136,7 @@ def sorting_numbers_algorithm(num_list, mode):
 k = sorting_numbers_algorithm(y, "fromhigher")
 
 
-text = ["hello my friend", "how are you doing", "hello man", "what going on man"]
+text = ["hello my friend", "how are you", "hello man", "whats going on man", "Fuck you", "You little bitch"]
 
 sup_text = ["Hello how are you", "what are you doing man"]
 
@@ -183,10 +183,6 @@ class one_hot_encoding:
     return self.matrix
 
 
-e = one_hot_encoding(text, sup_text).one_hot_encoding_of_text_words()
-k = one_hot_encoding(text, sup_text).one_hot_encoding_vectors(e)
-print(k)
-
 def BoW(training_text, text):
   vocabulary = []
   matrix = []
@@ -216,7 +212,74 @@ def BoW(training_text, text):
   return matrix
 
 
-print(BoW(text, sup_text))
+
+
+def TF_IDF(text):
+  words = []
+  for i in text:
+    i = i.lower()
+    for x in i.split(" "):
+      if x not in words:
+        words.append(x)
+ 
+  k = []
+  for i in text:
+    i = i.lower()
+    for x in i.split(" "):
+      k.append(x)
+  
+  tf = dict()
+  for i in words:
+    c = 0
+    for x in k:
+      if x == i:
+        c += 1
+      
+      else:
+        pass
+    
+    num = c / len(k)
+
+    tf[i] = num
+  
+  
+  idf = dict()
+  for i in words:
+    q = 0
+    for x in text:
+      x = x.lower()
+      if i in x:
+        q += 1 
+
+      else:
+        pass
+  
+    b = len(text) / q
+
+    idf[i] = math.log2(b)
+
+  tfidf = dict()
+
+  for i in words:
+    fin_num = tf[i] * idf[i]
+    tfidf[i] = fin_num
+
+  matrix = []
+  for i in range(len(text)):
+    matrix.append([])
+
+  for x in matrix:
+    for y in range(len(words)):
+      x.append(0)
+  
+  for r, i in enumerate(text):
+    i = i.lower()
+    for x in i.split(" "):
+      u = list(tfidf).index(x)
+      matrix[r][u] = tfidf[x]
+
+
+  return matrix
 
   
 
