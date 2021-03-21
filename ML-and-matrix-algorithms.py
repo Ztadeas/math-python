@@ -136,8 +136,6 @@ def sorting_numbers_algorithm(num_list, mode):
 k = sorting_numbers_algorithm(y, "fromhigher")
 
 
-text = ["hello my friend", "how are you", "hello man", "whats going on man", "Fuck you", "You little bitch"]
-
 sup_text = ["Hello how are you", "what are you doing man"]
 
 class one_hot_encoding:
@@ -280,6 +278,153 @@ def TF_IDF(text):
 
 
   return matrix
+
+y = [1, 1 , 1, 0, 0, 0, 0]
+test = ["fuck bitch", "hello how are you my guy", "Hello fuck you bitch", "hello bro"]
+
+text = ["Fuck yeah bitch hello my friend", "how are you bro", "hello man", "what going on man", "Fuck you are bitch", "You little bitch how", "hello I hate you"]
+
+def naive_bayes(text, labels, test_text):
+  y = []
+  for i in labels:
+    if i not in y:
+      y.append(i)
+
+  k = []
+
+  for c in range(len(y)):
+    k.append([])
+
+  for s, i in enumerate(y):
+    for x in range(len(labels)):
+      if labels[x] == i:
+        k[s].append(text[x].lower())
+  
+  prob = []
+  
+  for i in range(len(k)):
+    prob.append(dict())
+      
+  for i in range(len(k)):
+    words = []
+    for x in k[i]:
+      for c in x.split(" "):
+        words.append(c)
+
+    for t in words:
+      num = 0
+      for q in words:
+        if t == q:
+          num += 1
+
+      supa_num = num / len(words)
+
+      prob[i][t] = supa_num
+
+  int_guess = []
+
+  for i in range(len(k)):
+    int_guess.append(len(k[i]) / len(text))
+ 
+  predictions = []
+  
+  add_num = 0.1
+  for i in range(len(k)):
+    for x in prob[i]:
+      prob[i][x] += add_num
+
+  for i in test_text:
+    i = i.lower()
+    fin_probs = []
+    snd_probs = []
+    for x in range(len(k)):
+      p = int_guess[x]
+      for v in i.split(" "):
+        try:
+          p = p * prob[x][v]
+
+        except:
+          p = p * add_num
+
+      fin_probs.append(p)
+      snd_probs.append(p)
+    
+    fin = fin_probs
+    pred = sorting_numbers_algorithm(fin, "fromhigher")
+
+    q = pred[0]
+    t = snd_probs.index(q)
+    predictions.append(y[t])
+
+  return predictions
+    
+
+weight = [58, 50, 90, 45, 120, 40, 230]
+height = [190, 185, 170, 180, 170, 178, 180]
+lab = [1, 1, 0, 1, 0 ,1 ,0]
+test_x = [90, 50]
+test_y = [180, 200]
+
+def K_nearestneighbors(x, y, labels,test_x, test_y, K=3):
+  train = dict()
+  for i in range(len(x)):
+    train[x[i]] = y[i]
+
+  test_data = dict()
+  for x in range(len(test_x)):
+    test_data[test_x[x]] = test_y[x]
+
+  pravda = []
+
+  for s, i in test_data.items():
+    pure_labels = dict()
+    for i in labels:
+      if i not in pure_labels:
+        pure_labels[i] = 0
+    rozdily = []
+    for x, u in train.items():
+      s = abs(s)
+      i = abs(i)
+      x = abs(x)
+      u = abs(u) 
+      x_rozdil = abs(x - s)
+      y_rozdil = abs(u - i)
+      rozdil = x_rozdil**2 + y_rozdil**2
+      rozdil = math.sqrt(rozdil)
+      rozdily.append(rozdil)
+  
+    true_rozdily = []
+    for x in rozdily:
+      true_rozdily.append(x) 
+  
+    k_rozdily = sorting_numbers_algorithm(rozdily, "fromlower")
+    k_rozdily = k_rozdily[0:K]
+
+    test_labels = []
+
+    for i in k_rozdily:
+      c = true_rozdily.index(i)
+      test_labels.append(labels[c])
+
+    for i, s in pure_labels.items():
+      for x in test_labels:
+        if i == x:
+          pure_labels[i] += 1
+        else:
+          pass
+
+    another_labels = []
+
+    for i in pure_labels.values():
+      another_labels.append(i)
+      
+    another_labels = sorting_numbers_algorithm(another_labels, "fromhigher")
+    d = another_labels[0]
+    num = list(pure_labels.values()).index(d)
+    supa_num = list(pure_labels.keys())[num]
+    pravda.append(supa_num)
+
+  return pravda
 
   
 
