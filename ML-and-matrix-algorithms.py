@@ -1,4 +1,6 @@
 import math 
+import random
+import sys
 
 matrix = [[1,2, 3], [4, 5, 6], [7, 8 ,9]]
 p = [[4, 2, 8], [10, 12, 4], [4, 5, 9]]
@@ -359,11 +361,11 @@ def naive_bayes(text, labels, test_text):
   return predictions
     
 
-weight = [58, 50, 90, 45, 120, 40, 230]
-height = [190, 185, 170, 180, 170, 178, 180]
+weight = [58, 50, 90, 45, 120, 40]
+height = [190, 185, 100, 180, 130, 178]
 lab = [1, 1, 0, 1, 0 ,1 ,0]
-test_x = [90, 50]
-test_y = [180, 200]
+test_x = [90, 50, 100]
+test_y = [180, 200, 200]
 
 def K_nearestneighbors(x, y, labels,test_x, test_y, K=3):
   train = dict()
@@ -425,6 +427,139 @@ def K_nearestneighbors(x, y, labels,test_x, test_y, K=3):
     pravda.append(supa_num)
 
   return pravda
+
+
+
+def K_means_clustering(x, y, K=2, iterations = 10):
+  points = dict()
+  for i in range(len(x)):
+    points[x[i]] = y[i]
+
+  labels = []
+  c = 0
+  for i in range(K):
+    labels.append(c)
+    c += 1
+  
+  clust_points = dict()
+  for i in range(K):
+    random_xclust = random.randint(0, 100)
+    random_yclust = random.randint(0, 200)
+    clust_points[random_xclust] = random_yclust
+
+  for i in range(iterations):
+    print(clust_points)
+    clusters = []
+    for x in range(len(labels)):
+      clusters.append(dict())
+    for s, i in points.items():
+      vzdalenost_supa = []
+      for m, t in clust_points.items():
+        s = abs(s)
+        i = abs(i)
+        m = abs(m)
+        t = abs(t)
+        rozdil_x = abs(s - m)
+        rozdil_y = abs(i - t)
+        skoro_vzdalenost = rozdil_x**2 + rozdil_y **2
+        vzdalenost = math.sqrt(skoro_vzdalenost)
+        vzdalenost_supa.append(vzdalenost)
+      
+      dalsi_vzdalenost = []
+      for q in vzdalenost_supa:
+        dalsi_vzdalenost.append(q)
+
+      vzdalenost_supa = sorting_numbers_algorithm(vzdalenost_supa, "fromlower")
+      vzdalenost_supa = vzdalenost_supa[0]
+      d = dalsi_vzdalenost.index(vzdalenost_supa)
+      clusters[d][s] = i
+      
+    clust_points = {}
+
+    for i in clusters:
+      x_avg = []
+      y_avg = []
+      for w, e in i.items():
+        x_avg.append(w)
+        y_avg.append(e)
+    
+      try: 
+        x_avg = sum(x_avg) / len(x_avg)
+        y_avg = sum(y_avg) / len(y_avg)
+
+        clust_points[x_avg] = y_avg
+
+      except:
+        pass
+
+
+  return clusters
+
+
+
+
+chest_pain = [0, 1, 1, 1, 0, 1, 0, 1]
+blocked_athretis = [0, 1, 0, 1, 1, 1, 0, 1]
+labels= [0, 1, 0, 0, 1, 1, 0, 1]
+
+class decision_tree:
+  def yes_no(*args, labels):
+    
+    q = len(args)
+    
+    nodes = []
+
+    for m in range(len(args)):
+      gini_imp = []
+      for i in range(len(args)):
+        gini_imp.append([])
+      
+      yes_no = []
+      for i in range(len(args)):
+        yes_no.append([])
+  
+      
+      for i in range(len(gini_imp)):
+        yes_t = 0
+        no_t = 0
+        yes_f = 0
+        no_f = 0
+        for x in range(len(args[i])):
+          if args[i][x] == 1 and labels[x] == 1:
+            yes_t += 1
+        
+          elif args[i][x] == 1 and labels[x] == 0:
+            no_t += 1
+        
+          elif args[i][x] == 0 and labels[x] == 1:
+            yes_f += 1
+
+          elif args[i][x] == 0 and labels[x] == 0:
+            no_f += 1
+
+        has = 1 - (yes_t/(yes_t+no_t))**2  - (no_t/(yes_t+no_t))**2
+        d_has = 1 - (yes_f/(yes_f+no_f)) - (no_f/(yes_f+no_f))
+        total = ((yes_t+no_t)/len(labels)) * has + ((yes_f + no_f) / len(labels)) * d_has
+        gini_imp[i].append(total)
+       
+        yes_no[i].append(yes_t)
+        yes_no[i].append(no_t)
+        yes_no[i].append(yes_f)
+        yes_no[i].append(no_f)
+      
+      supa_gini = []
+      for x in gini_imp:
+        supa_gini.append(x[0])
+    
+      gini = sorting_numbers_algorithm(gini_imp, "fromlower")
+      gini = gini[0]
+      print(gini)
+      l = supa_gini.index(gini[0])
+      nodes.append(yes_no[l])
+      
+
+
+    return nodes
 
   
 
