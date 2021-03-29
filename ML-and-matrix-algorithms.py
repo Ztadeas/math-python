@@ -361,8 +361,8 @@ def naive_bayes(text, labels, test_text):
   return predictions
     
 
-weight = [58, 50, 90, 45, 120, 40]
-height = [190, 185, 100, 180, 130, 178]
+weight = [0.8, 0.9, 0.75, 1, 0.65]
+height = [1.84, 1.9, 1.8, 1.92, 1.7]
 lab = [1, 1, 0, 1, 0 ,1 ,0]
 test_x = [90, 50, 100]
 test_y = [180, 200, 200]
@@ -561,7 +561,169 @@ class decision_tree:
 
     return nodes
 
+test_weigt = [0.8]
+
+def linearregresion(x, y, test, lr=0.01):
+  d_e = []
+  a = 0.5
+  b = 0
   
+  for m in range(1000):
+    d_inter = []
+    d_slope = []
+    for i in range(len(x)):
+      eq = (-2*x[i])*(y[i] - (a * x[i] + b)) 
+      der = -2*(y[i] - (a * x[i] + b))
+
+      d_inter.append(der)
+      d_slope.append(eq)
+      
+
+    step_size_inter = sum(d_inter) * lr
+    step_size_slope = sum(d_slope) * lr
+    a = a - (step_size_slope)
+    b = b - (step_size_inter)
+    d_e.append(step_size_inter)
+
+  preds = []
+  for q in range(len(test)):
+    pred = a * test[q] + b
+    preds.append(pred)
+
+  return preds
+
+data_x = [0.1, 1, 1.5, 0.05, 0.75, 0.07, 0.21, 1.15, 0.14]
+data_y = [0, 1, 1, 0, 1, 0, 0, 1, 0]
+test_log = [90]
+
+def logisticregresion(x, y, test, lr=0.0001):
+  assert len(x) == len(y)
+  a = 1
+  b = 1
+  for q in range(1000):
+    d_a = []
+    d_b = []
+    for i in range(len(x)):
+      if y[i] == 1:
+        du = math.exp((a*x[i])+b) + 1 
+        der_a = x[i] / du
+        der_b = 1 / du
+        d_a.append(der_a)
+        d_b.append(der_b)
+
+      else:
+        v = (math.exp(a*x[i] + b) + 1)
+        dera_a = x[i] * math.exp(a*x[i] + b) / v
+        dera_b = math.exp(a*x[i] + b) / v
+
+        d_a.append(dera_a)
+        d_b.append(dera_b)
+    
+    l = sum(d_a) * lr
+    k = sum(d_b) * lr
+    a = a - l
+    b = b - k
+
+  predsoslav = []
+  for w in range(len(test)):
+    s = (test[w] * a) +b
+    print(s)
+    u = 1 + (math.exp(-(s)))
+    asab = 1 / u
+    predsoslav.append(asab)
+  
+  for z in predsoslav:
+    if z > 0.5:
+      print(1)
+
+    else:
+      print(0)
+
+    
+svm_d = [0.24, 0.3, 0.14, 0.9, 1, 0.15, 1.4, 0.85]
+lob = [0, 0, 0, 1, 1, 0, 1, 1]
+tosto = [0.2]
+
+
+class SVM:
+  def one_D(x, y, test):
+    ones = []
+    zeros = []
+    for s in range(len(x)):
+      if y[s] == 1:
+        ones.append(x[s])
+      
+      else:
+        zeros.append(x[s])
+
+    rozdily = []
+    for q in ones:
+      for w in zeros:
+        rozdily.append(abs(q-w))
+    
+    supa_rozdily = []
+    a = 0
+    b = len(ones)
+    while b < len(rozdily)+1:
+      supa_rozdily.append(rozdily[a:b])
+      a += len(ones)
+      b += len(ones)
+    
+    lowest = []
+    
+    for i in supa_rozdily:
+      p = sorting_numbers_algorithm(i, "fromlower")
+      lowest.append(p[0])
+    
+    lowest_ = []
+
+    for i in lowest:
+      lowest_.append(i)
+
+    lowest = sorting_numbers_algorithm(lowest, "fromlower")
+    
+    t = lowest_.index(lowest[0])
+    
+    supa_rozdily_ = []
+
+    a = 0
+    b = len(ones)
+    while b < len(rozdily)+1:
+      supa_rozdily_.append(rozdily[a:b])
+      a += len(ones)
+      b += len(ones)
+
+    n = supa_rozdily_[t].index(lowest[0])
+
+    r = ones[t] + zeros[n]
+    
+    border = r / 2
+     
+
+    if ones[t] > zeros[n]:
+      onesarebigger = True
+
+    else:
+      onesarebigger = False
+    
+    preds = []
+
+    for i in test:
+      if onesarebigger:
+        if i > border:
+          preds.append(1)
+
+        else:
+          preds.append(0)
+
+      else:
+        if i > border:
+          preds.append(0)
+
+        else:
+          preds.append(1)
+
+    return preds
 
 
     
