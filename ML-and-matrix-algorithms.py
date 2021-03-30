@@ -641,8 +641,10 @@ def logisticregresion(x, y, test, lr=0.0001):
 
     
 svm_d = [0.24, 0.3, 0.14, 0.9, 1, 0.15, 1.4, 0.85]
+svd_y = [0.35, 0.4, 0.3, 0.93, 1.2, 0.36, 1.7, 0.9]
 lob = [0, 0, 0, 1, 1, 0, 1, 1]
-tosto = [0.2]
+tosto = [0.74, 0.3, 1.5]
+tosto_e = [1, 0.25, 1]
 
 
 class SVM:
@@ -725,6 +727,84 @@ class SVM:
 
     return preds
 
+  def two_D(x, y, labels, test_x, test_y):
+    a = 3
+    b = 2
+    c = 5
+    lr = 0.01
+    x_ones = []
+    x_zeros = []
+    for i in range(len(x)):
+      if labels[i] == 1:
+        x_ones.append(x[i])
+
+      else:
+        x_zeros.append(x[i])
+    
+
+    if sum(x_ones) > sum(x_zeros):
+      ones = "higher"
+      zeros = "lower"
+
+    else:
+      zeros = "higher"
+      ones = "lower"
+
+    for m in range(10000):
+      point = random.randint(0, len(x)-1)
+      if ones == "higher":
+        if labels[point] == 0 and (a*x[point]) + (b*y[point]) + c > 0:
+          a = a - (lr * x[point])
+          b = b - (lr * y[point])
+          c = c - lr
+
+        elif labels[point] == 1 and 0 > (a*x[point]) + (b*y[point]) + c:
+          a = a + (lr * x[point])
+          b = b + (lr * y[point])
+          c = c + lr
+
+        else:
+          pass
+
+      elif ones == "lower":
+        if labels[point] == 1 and (a*x[point]) + (b*y[point]) + c > 0:
+          a = a - (lr * x[point])
+          b = b - (lr * y[point])
+          c = c - lr
+
+        elif labels[point] == 0 and 0 > (a*x[point]) + (b*y[point]) + c:
+          a = a + (lr * x[point])
+          b = b + (lr * y[point])
+          c = c + lr
+
+        else:
+          pass
+   
+    a = a * 0.99
+    b = b * 0.99
+    c = c*0.99
+
+    preds = []
+   
+    for i in range(len(test_x)):
+      if ones == "higher":
+        if ((a*test_x[i]) + (b*test_y[i]) + c) > 0:
+          preds.append(1)
+
+        else:
+          preds.append(0)
+
+      else:
+        if ((a*test_x[i]) + (b*test_y[i]) + c) > 0:
+          preds.append(0)
+
+        else:
+          preds.append(1)
+
+    return preds
+
+
+print(SVM.two_D(svm_d, svd_y, lob, tosto, tosto_e))
 
     
 
