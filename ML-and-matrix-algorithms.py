@@ -806,7 +806,81 @@ class SVM:
 
 print(SVM.two_D(svm_d, svd_y, lob, tosto, tosto_e))
 
+
+def simleneuralnetwork(x, y, test):
+  w1 = 2
+  w2 = 3
+  w3 = 1.2
+  w4 = 0.69
+  b1 = 0
+  b2 = 0
+  b3 = 0
+  lr = 0.001
+  for i in range(20000):
+    print(f"{i+1}: iteration")
+    w1_d = []
+    w2_d = []
+    w3_d = []
+    w4_d = []
+    b1_d = []
+    b2_d = []
+    b3_d = []
+    for q in range(len(x)):
+      try_pred = x[q] * w1  +b1
+      try_pred2 = math.log(1 + 2.7171**try_pred) * w3
+      try_pred3 = x[q] * w2  +b2
+      try_pred4 = math.log(1 + 2.7171**try_pred3) * w4
+      fin = try_pred2 + try_pred4 + b3
+      main_equation = -2 * (y[q] - fin)
+      function_der1 = 2.7171 ** (x[q] * w1  +b1)  / (1 + (2.7171 ** (x[q] * w1  +b1)))
+      function_der2 = 2.7171 ** (x[q] * w2  +b2)  / (1 + (2.7171 ** (x[q] * w2  +b2)))
+      w1_de = main_equation * w3 * function_der1 * x[q]
+      w1_d.append(w1_de)
+      w2_de = main_equation * w4 * function_der2 * x[q]
+      w2_d.append(w2_de)
+      w3_de = main_equation * math.log(1 + 2.7171**try_pred)
+      w3_d.append(w3_de)
+      w4_de = main_equation * math.log(1 + 2.7171**try_pred2)
+      w4_d.append(w4_de)
+      b1_de = main_equation * w3 * function_der1
+      b1_d.append(b1_de)
+      b2_de = main_equation *  w4 * function_der2
+      b2_d.append(b2_de)
+      b3_de = main_equation
+      b3_d.append(b3_de)
     
+    w1 = w1 - (sum(w1_d) * lr)
+    w2 = w2 - (sum(w2_d) * lr)
+    w3 = w3 - (sum(w3_d) * lr)
+    w4 = w4 - (sum(w4_d) * lr)
+    b1 = b1 - (sum(b1_d) * lr)
+    b2 = b2 - (sum(b2_d) * lr)
+    b3 = b3 - (sum(b3_d) * lr)
+  
+  preds = []
+
+  for i in test:
+    try_pred = i * w1  +b1
+    try_pred2 = math.log(1 + 2.7171**try_pred) * w3
+    try_pred3 = i * w2  +b2
+    try_pred4 = math.log(1 + 2.7171**try_pred3) * w4
+    fin = try_pred2 + try_pred4 + b3
+    preds.append(fin)
+
+  return preds
+
+
+def fibonacci_sequence(max_num):
+  a = 0
+  b = 1
+  sequence = [0, 1]
+  while b < max_num:
+    c=a+b
+    a = b
+    b = c
+    sequence.append(b)
+
+  return sequence, b/a
 
 
     
