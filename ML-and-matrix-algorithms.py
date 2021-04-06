@@ -882,7 +882,54 @@ def fibonacci_sequence(max_num):
 
   return sequence, b/a
 
+def expected_value(data, bet=5, value= 1):
+  values = []
+  for x in data:
+    if x not in values:
+      values.append(x)
 
+  real = []
+  probs = []
+
+  for x in range(len(values)):
+    real.append([0])
+
+  for r in data:
+    real[r][0] += 1
+
+  for x in real:
+    c = x[0] / len(data)
+    probs.append(c)
+
+  final = []
+
+  for x in range(len(values)):
+    if x == value:
+      f = probs[x] * bet
+      final.append(f)
+
+    else:
+      f = probs[x] * (-bet)
+      final.append(f)
+
+  return sum(final)
+
+
+def binary_search(data, num=410):
+  r = data[math.floor(len(data)/2)]
+  pred_num = 0 
+  while r != num:
+    first = len(data) / 2
+    first =  math.floor(first)    
+    if r > num:
+      data = data[:first]
+
+    else:
+      data = data[first:]
+    
+    r = data[math.floor(len(data)/2)]
+    
+  print("Done: ", r)
     
   
 
