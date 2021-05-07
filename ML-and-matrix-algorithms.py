@@ -930,6 +930,399 @@ def binary_search(data, num=410):
     r = data[math.floor(len(data)/2)]
     
   print("Done: ", r)
+  
+  
+  
+  def simple_P_value(**args):
+  for i in args:
+    for x in i:
+      main_list = []
+      n = len(x)
+      all_len = 2**n
+      for w in range(n):
+        main_list.append("0")
+      main_num = ("").join(main_list)
+      
+      supa_main = []
+      
+      p = 0
+
+      for q in range(all_len):
+        supa_main.append(main_num)
+        main_num[p] = 1
+        
+        p += 1
+
+        
+  
+  return supa_main
+  
+
+def Binary_Exponentiation(num, num2):
+  if num2 == 0:
+    return 1
+
+  elif num2 == 1:
+    return num
+
+  else:
+    if num2 % 2 == 0:
+      c = num**(num2/2)
+      c = c*c
+      return c
+
+    else:
+      c = num**(num2/2)
+      c = c*c*num
+      return c
+
+
+#class quantum_physics:
+  
+
+
+def Covariance(data_x, data_y):
+  mean_x = sum(data_x) / len(data_x)
+  mean_y = sum(data_y) / len(data_y)
+  cov = []
+  for i in range(len(data_x)):
+    cov.append((data_x[i] - mean_x) * (data_y[i] - mean_y))
+
+  covar = sum(cov) / (len(data_x))
+
+  return(covar)
+
+  
+def correlation(data_x, data_y):
+  c = Covariance(data_x, data_y)
+  k = smerodatna_odchylka(data_x)
+  q = smerodatna_odchylka(data_y)
+  n = k*q
+  fin = c/n
+  return fin
+
+def R_squared(data_x, data_y):
+  return correlation(data_x, data_y)**2
+
+
+print(R_squared(weight, height))
+
+def binomial_distribution(x, n, p=0.5):
+  l= math.factorial(n) 
+  k = math.factorial(x) * math.factorial(n-x) 
+  c= l/k
+  u = p**x
+  c = c * u
+  j = 1-p
+  c = c * j**(n-x)
+  print("Propability of that being random is :", c)
+  return c
+
+  
+
+def AdaBoost(*args, y=[], test=[], k=10):
+  amount_of_say = {}
+  weights = []
+  for i in range(len(args[0])):
+    weights.append(1/len(args[0]))
+
+  continuous = []
+
+  for i in range(len(args)):
+    continuous.append(0)
+  
+  for i in range(len(args)):
+    for q in args[i]:
+      if q > 1:
+        continuous[i] = 1
+
+      else:
+        pass
+  print(continuous)
+  
+  for x in range(k):
+    best_num = []
+    for t in range(len(continuous)):
+      best_num.append([])
+    
+    gini_imp = []
+    for i in range(len(continuous)):
+      if continuous[i] == 0:
+        base = [[0, 0], [0, 0]]
+        for w in range(len(args[i])):
+          if args[i][w] == 1 and y[w] == 1:
+            base[0][0] += 1
+
+          elif args[i][w] == 1 and y[w] == 0:
+            base[0][1] += 1
+
+          elif args[i][w] == 0 and y[w] == 1:
+            base[1][0] += 1
+
+          elif args[i][w] == 0 and y[w] == 0:
+            base[1][1] += 1
+
+          else:
+            pass
+        
+        for u in base:
+          for z in range(len(u)):
+            u[z] += 0.001
+       
+        gini_imp1 = 1 - (base[0][0] / sum(base[0]))**2 - (base[0][1] / sum(base[0]))**2
+
+        gini_imp2 = 1 - (base[1][0] / sum(base[1]))**2 - (base[1][1] / sum(base[1]))**2
+
+        full_gini = (sum(base[0]) / (sum(base[0]) + sum(base[1]))) * gini_imp1 + (sum(base[1]) / (sum(base[0]) + sum(base[1]))) * gini_imp2
+
+        gini_imp.append(full_gini)
+
+      else:
+        gini = []
+        nums = []
+        b = sorted(args[i])
+        for e in range(len(b) - 1):
+          num = (b[e] + b[e + 1]) / 2
+          nums.append(num)
+
+        for a in nums:
+          base2 = [[0, 0], [0, 0]]
+          for q in range(len(args[i])):
+            if args[i][q] < a and y[q] ==1:
+              base2[0][0] += 1
+
+            elif args[i][q] < a and y[q] == 0:
+              base2[0][1] += 1
+
+            elif args[i][q] > a and y[q] == 1:
+              base2[1][0] += 1
+            
+            else:
+              base2[1][1] += 1
+
+          for u in base:
+            for z in range(len(u)):
+              u[z] += 0.001
+          
+          gini_imp3 = 1 - (base[0][0] / sum(base[0]))**2 - (base[0][1] / sum(base[0]))**2
+
+          gini_imp4 = 1 - (base[1][0] / sum(base[1]))**2 - (base[1][1] / sum(base[1]))**2
+
+          ful_gini = (sum(base[0]) / (sum(base[0]) + sum(base[1]))) * gini_imp3 + (sum(base[1]) / (sum(base[0]) + sum(base[1]))) * gini_imp4
+
+          gini.append(ful_gini)
+          
+
+      
+
+
+
+        lowest = sorted(gini)
+
+        low = lowest[0]
+        real = gini.index(low)
+        best_num[i].append(nums[real])
+        gini_imp.append(low)
+    
+    
+    
+    best_gini = sorted(gini_imp)
+    best_gini = best_gini[0]
+
+    best = gini_imp.index(best_gini)
+    true_true = []
+    true_false = []
+    false_true = []
+    false_false = []
+    err_weights = []
+    supa_base = [[0, 0], [0, 0]]
+    
+    if continuous[best] == 0:
+      for w in range(len(args[best])):
+        if args[best][w] == 1 and y[w] == 1:
+          supa_base[0][0] += 1
+          true_true.append(args[best].index(args[best][w]))
+
+        elif args[best][w] == 1 and y[w] == 0:
+          supa_base[0][1] += 1
+          true_false.append(args[best].index(args[best][w]))
+
+        elif args[best][w] == 0 and y[w] == 1:
+          supa_base[1][0] += 1
+          false_true.append(args[best].index(args[best][w]))
+
+        else:
+          supa_base[best][1] += 1
+          false_false.append(args[best].index(args[best][w]))
+
+     
+      if supa_base[0][0] > supa_base[0][1]:
+        for g in true_false:
+          err_weights.append(weights[g])
+
+        for g in false_true:
+          err_weights.append(weights[g])
+        
+        total_err = sum(err_weights)
+
+        o = (1 - total_err) / total_err
+
+        aos = math.log1p(o-1) / 2
+
+        amount_of_say[best,1] = aos
+        for d in range(len(weights)):
+          if d in true_false or false_true:
+            weights[d] = weights[d] * (2.7171**aos)
+
+          else:
+            weights[d] = weights[d] * (2.7171 ** -(aos))
+      
+      else:
+        for g in true_true:
+          err_weights.append(weights[g])
+
+        for g in false_false:
+          err_weights.append(weights[g])
+        
+        total_err = sum(err_weights)
+
+        o = (1 - total_err) / total_err
+
+        aos = math.log1p(o-1) / 2
+
+        amount_of_say[best,0] = aos
+        for d in range(len(weights)):
+          if d in false_false or true_true:
+            weights[d] = weights[d] * (2.7171**aos)
+
+          else:
+            weights[d] = weights[d] * (2.7171 ** -(aos))
+    
+    else:
+      supa_num = best_num[best][0]
+      for q in range(len(args[best])):
+        if args[best][q] < supa_num and y[q] ==1:
+          supa_base[0][0] += 1
+
+        elif args[best][q] < supa_num and y[q] == 0:
+          supa_base[0][1] += 1
+
+        elif args[best][q] > supa_num and y[q] == 1:
+          supa_base[1][0] += 1
+            
+        else:
+          supa_base[1][1] += 1
+      
+      if supa_base[0][0] > supa_base[0][1]:
+        for g in true_false:
+          err_weights.append(weights[g])
+
+        for g in false_true:
+          err_weights.append(weights[g])
+        
+        total_err = sum(err_weights)
+
+        o = (1 - total_err) / total_err
+
+        aos = math.log1p(o-1) / 2
+
+        amount_of_say[best, 1] = aos
+        for d in range(len(weights)):
+          if d in true_false or false_true:
+            weights[d] = weights[d] * (2.7171**aos)
+
+          else:
+            weights[d] = weights[d] * (2.7171 ** -(aos))
+     
+     
+      else:
+        for g in true_true:
+          err_weights.append(weights[g])
+
+        for g in false_false:
+          err_weights.append(weights[g])
+        
+        total_err = sum(err_weights)
+
+        o = (1 - total_err) / total_err
+
+        aos = math.log1p(o-1) / 2
+
+        amount_of_say[best, 0] = aos
+      
+        for d in range(len(weights)):
+          if d in false_false or true_true:
+            weights[d] = weights[d] * (2.7171**aos)
+
+          else:
+            weights[d] = weights[d] * (2.7171 ** -(aos))
+
+    if sum(weights) != 1:
+      for t in range(len(weights)):
+        weights[t] = weights[t] / sum(weights)
+    
+    rand_nums = []
+
+    for r in range(len(weights)):
+      rand_nums.append(random.randint(0, 100)/100)
+
+    for supa_ind, e in enumerate(rand_nums):
+      najs = 0
+      for ind, f in enumerate(weights):
+        najs += f
+        if e <= najs:
+          for k in range(len(continuous)):
+            args[k][ind] = args[k][supa_ind]
+
+  #for i in test:
+
+
+  return amount_of_say
+
+
+  
+def multi_regresion(x, y, test, lr=0.01):
+  d_e = []
+  b = 0
+  a = []
+
+
+  for i in range(len(x)):
+    a.append(0.5)
+
+  #b + a1x + a2x +a3x....
+  for m in range(1000):
+    print(m+1)
+    d_inter = []
+    for s in range(len(x)):
+      d_slope = []
+      
+      for i in range(len(x[0])):
+        eq = (-2*x[s][i])*(y[i] - (a[s] * x[s][i] + b)) 
+        der = -2*(y[i] - (a[s] * x[s][i] + b))
+       
+        d_slope.append(eq)
+        d_inter.append(der)
+      
+      step_size_slope = sum(d_slope) * lr   
+      a[s] = a[s] - (step_size_slope)
+      
+      
+
+    step_size_inter = sum(d_inter) * lr
+    b = b - (step_size_inter) 
+    d_e.append(step_size_inter)
+
+  preds = []
+  for i in range(len(test[0])):
+    predo = []
+    for q in [0, 1]:
+      pred = test[q][i]*a[q]
+      predo.append(pred)
+
+    preds.append(sum(predo) + b)
+
+  return preds  
     
   
 
