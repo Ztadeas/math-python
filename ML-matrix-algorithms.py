@@ -1,6 +1,5 @@
 import math 
 import random
-from randomprojects import lol
 import sys
 import pandas
 import numpy
